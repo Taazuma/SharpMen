@@ -1,1 +1,2 @@
 D:\Tommi\Documents\My\Deve\autosharp\AutoSharp Edit by Taazuma\bin\Release\AutoSharp.exe.config
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\bin\Release\AutoSharp.exe.config

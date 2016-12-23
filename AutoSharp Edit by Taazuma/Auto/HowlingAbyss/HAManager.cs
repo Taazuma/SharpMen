@@ -14,8 +14,8 @@ namespace AutoSharp.Auto.HowlingAbyss
         }
         public static void Load()
         {
-            Game.OnUpdate += DecisionMaker.OnUpdate;
-            Orbwalker.OverrideOrbwalkPosition = GetOrbPosDelegate();
+            //Game.OnUpdate += DecisionMaker.OnUpdate;
+            //Orbwalker.OverrideOrbwalkPosition = GetOrbPosDelegate();
             ARAMShopAI.Main.Init(); 
         }
 

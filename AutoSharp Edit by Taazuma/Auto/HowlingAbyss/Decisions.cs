@@ -69,7 +69,7 @@ namespace AutoSharp.Auto.HowlingAbyss
         internal static void Fight()
         {
             Orbwalker.ActiveModesFlags = Heroes.Player.CountEnemiesInRange(Heroes.Player.AttackRange) == 0 ? Orbwalker.ActiveModes.LaneClear : Orbwalker.ActiveModes.Combo;
-            DecisionMaker.Goto(Positioning.RandomlyChosenMove);
+            //DecisionMaker.Goto(Positioning.RandomlyChosenMove);
         }
 
         internal static bool ImSoLonely()

@@ -26,3 +26,16 @@ D:\Tommi\Documents\My\Deve\autosharp\AutoSharp Edit by Taazuma\obj\Release\AutoS
 D:\Tommi\Documents\My\Deve\autosharp\AutoSharp Edit by Taazuma\obj\Release\AutoSharp.exe
 D:\Tommi\Documents\My\Deve\autosharp\AutoSharp Edit by Taazuma\obj\Release\AutoSharp.pdb
 D:\Tommi\Documents\My\Deve\autosharp\AutoSharp Edit by Taazuma\bin\Release\Mario`s Lib.dll
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\bin\Release\AutoSharp.exe.config
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\bin\Release\AutoSharp.exe
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\bin\Release\AutoSharp.pdb
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\bin\Release\EloBuddy.dll
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\bin\Release\EloBuddy.Sandbox.dll
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\bin\Release\EloBuddy.SDK.dll
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\bin\Release\Newtonsoft.Json.dll
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\bin\Release\SharpDX.Direct3D9.dll
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\bin\Release\SharpDX.dll
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\bin\Release\SharpDX.XInput.dll
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\obj\Release\AutoSharp Edit by Taazuma.csprojResolveAssemblyReference.cache
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\obj\Release\AutoSharp.exe
+D:\Tommi\Documents\GitHub\SharpMen\AutoSharp Edit by Taazuma\obj\Release\AutoSharp.pdb

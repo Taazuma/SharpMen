@@ -10,7 +10,9 @@ using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using SharpDX;
 using Color = System.Drawing.Color;
-
+using AutoSharp.MainCore;
+using AutoSharp.Spells;
+using Autosharp;
 // ReSharper disable ObjectCreationAsStatement
 
 namespace AutoSharp
@@ -19,70 +21,46 @@ namespace AutoSharp
     {
         public static GameMapId Map;
         public static Menu Config;
-        
+        public static bool Loaded;
+
+        public static float Timer;
+
+        public static string Activemode;
+
+        public static string Moveto;
+
+        public static bool Moving;
+
+        public static Menu MenuIni;
+
         private static bool _loaded = false;
 
         public static void Init()
         {
-            Chat.Print("AutoSharp loaded", Color.CornflowerBlue);
-            //Chat.Say("Hello :)");
             Map = Game.MapId;
-            //Chat.Print(Map.ToString()); // Prints Summoners Rift on Howling Abbyss
-            /*
-            Config = new Menu("AutoSharp: " + ObjectManager.Player.ChampionName, "autosharp." + ObjectManager.Player.ChampionName, true);
-            Config.AddItem(new MenuItem("autosharp.mode", "Mode").SetValue(new StringList(new[] {"AUTO", "SBTW"}))).ValueChanged +=
-                (sender, args) =>
-                {
-                    if (Config.Item("autosharp.mode").GetValue<StringList>().SelectedValue == "AUTO")
-                    {
-                        Autoplay.Load();
-                    }
-                    else
-                    {
-                        Autoplay.Unload();
-                        Orbwalker.SetOrbwalkingPoint(Game.CursorPos);
-                    }
-                };
-            Config.AddItem(new MenuItem("autosharp.humanizer", "Humanize Movement by ").SetValue(new Slider(new Random().Next(125, 350), 125, 350)));
-            Config.AddItem(new MenuItem("autosharp.quit", "Quit after Game End").SetValue(true));
-            Config.AddItem(new MenuItem("autosharp.shop", "AutoShop?").SetValue(true));
-            var options = Config.AddSubMenu(new Menu("Options: ", "autosharp.options"));
-            options.AddItem(new MenuItem("autosharp.options.healup", "Take Heals?").SetValue(true));
-            options.AddItem(new MenuItem("onlyfarm", "Only Farm").SetValue(false));
-            if (Map == Utility.Map.MapType.SummonersRift)
-            {
-                options.AddItem(new MenuItem("recallhp", "Recall if Health% <").SetValue(new Slider(30, 0, 100)));
-            }
-            var randomizer = Config.AddSubMenu(new Menu("Randomizer", "autosharp.randomizer"));
-            var orbwalker = Config.AddSubMenu(new Menu("Orbwalker", "autosharp.orbwalker"));
-            randomizer.AddItem(new MenuItem("autosharp.randomizer.minrand", "Min Rand By").SetValue(new Slider(0, 0, 90)));
-            randomizer.AddItem(new MenuItem("autosharp.randomizer.maxrand", "Max Rand By").SetValue(new Slider(100, 100, 300)));
-            randomizer.AddItem(new MenuItem("autosharp.randomizer.playdefensive", "Play Defensive?").SetValue(true));
-            randomizer.AddItem(new MenuItem("autosharp.randomizer.auto", "Auto-Adjust? (ALPHA)").SetValue(true));
-            */
-            // Moved it to another addon: ChampionPlugins
-            //new PluginLoader();
-            
                 Cache.Load(); 
-                Game.OnUpdate += Positioning.OnUpdate;
+                //Game.OnUpdate += Positioning.OnUpdate;
                 Autoplay.Load();
                 Game.OnEnd += OnEnd;
-                //Obj_AI_Base.OnIssueOrder += AntiShrooms;
                 Game.OnUpdate += AntiShrooms2;
-                Spellbook.OnCastSpell += OnCastSpell;
+                //Spellbook.OnCastSpell += OnCastSpell;
                 Obj_AI_Base.OnDamage += OnDamage;
-            
-            /*
-            Orbwalker = new MyOrbwalker.Orbwalker(orbwalker);
-            
-            Utility.DelayAction.Add(
-                    new Random().Next(1000, 10000), () =>
-                    {
-                        new LeagueSharp.Common.AutoLevel(Utils.AutoLevel.GetSequence().Select(num => num - 1).ToArray());
-                        LeagueSharp.Common.AutoLevel.Enable();
-                        Console.WriteLine("AutoLevel Init Success!");
-                    });
-             */
+            Chat.Print("AutoSharp loaded", Color.CornflowerBlue);
+            Timer = Game.Time;
+            Game.OnTick += Game_OnTick;
+            MenuIni = MainMenu.AddMenu("DNK", "DNK");
+            MenuIni.AddGroupLabel("DNK Settings");
+            MenuIni.Add("DisableSpells", new CheckBox("Disable Built-in Casting Logic", false));
+            MenuIni.Add("Safe", new Slider("Safe Slider (Recommended 1250)", 1250, 0, 2500));
+            MenuIni.AddLabel("More Value = more defensive playstyle");
+            // Initialize Bot Functions.
+            Brain.Init();
+            Chat.Print("Buddy Loaded !");
+        }
+
+        private static void Events_OnGameEnd(EventArgs args)
+        {
+            Core.DelayAction(() => Game.QuitGame(), 250);
         }
 
         public static void OnDamage(AttackableUnit sender, AttackableUnitDamageEventArgs args)
@@ -104,6 +82,29 @@ namespace AutoSharp
                  
                 }
         }
+
+        private static void Game_OnTick(EventArgs args)
+        {
+            if (!Loaded)
+            {
+                if (Game.Time - Timer >= 10)
+                {
+                    Loaded = true;
+
+                    // Initialize The Bot.
+                    Init();
+                }
+            }
+            else
+            {
+                if (Player.Instance.IsDead)
+                {
+                    return;
+                }
+                Brain.Decisions();
+            }
+        }
+
         private static AIHeroClient myHero
         {
             get { return Player.Instance; }
