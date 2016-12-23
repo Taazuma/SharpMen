@@ -21,13 +21,10 @@ namespace AutoSharp.Auto.HowlingAbyss
 
         public static void Goto(Vector3 pos)
         {
-            Goto(pos,"auto");
         }
+
         public static void Goto(Vector3 pos, string from)
         {
-            Chat.Print(from);
-            IntroducedPos = pos;
-            Orbwalker.OrbwalkTo(pos);
         }
         
         public static void OnUpdate(EventArgs args)
@@ -36,11 +33,6 @@ namespace AutoSharp.Auto.HowlingAbyss
             _lastUpdate = Environment.TickCount;
 
             var player = Heroes.Player;
-
-            if (Decisions.ImSoLonely())
-            {
-                return;
-            }
 
             //if (Program.Config.Item("autosharp.options.healup").GetValue<bool>() && Decisions.HealUp())
             if(Decisions.HealUp())
@@ -60,19 +52,8 @@ namespace AutoSharp.Auto.HowlingAbyss
             {
                 Shopping.Shop();
                 Wizard.AntiAfk();
-            }
+            }        
 
-            if (Decisions.Farm())
-            {
-                return;
-            }
-            Decisions.Fight();
-            
-            
-            if (GetOrbPos == Game.CursorPos)
-            {
-                Decisions.ImSoLonely();
-            }
         }
     }
 }

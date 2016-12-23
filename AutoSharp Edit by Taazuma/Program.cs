@@ -13,6 +13,7 @@ using Color = System.Drawing.Color;
 using AutoSharp.MainCore;
 using AutoSharp.Spells;
 using Autosharp;
+using EloBuddy.SDK.Events;
 // ReSharper disable ObjectCreationAsStatement
 
 namespace AutoSharp
@@ -35,19 +36,26 @@ namespace AutoSharp
 
         private static bool _loaded = false;
 
+
+        private static void Main(string[] args)
+        {
+            Loading.OnLoadingComplete += Loading_OnLoadingComplete;
+        }
+
+        private static void Loading_OnLoadingComplete(EventArgs args)
+        {
+            Timer = Game.Time;
+            Game.OnTick += Game_OnTick;
+
+        }
+
         public static void Init()
         {
             Map = Game.MapId;
                 Cache.Load(); 
-                //Game.OnUpdate += Positioning.OnUpdate;
                 Autoplay.Load();
                 Game.OnEnd += OnEnd;
-                Game.OnUpdate += AntiShrooms2;
-                //Spellbook.OnCastSpell += OnCastSpell;
-                Obj_AI_Base.OnDamage += OnDamage;
             Chat.Print("AutoSharp loaded", Color.CornflowerBlue);
-            Timer = Game.Time;
-            Game.OnTick += Game_OnTick;
             MenuIni = MainMenu.AddMenu("DNK", "DNK");
             MenuIni.AddGroupLabel("DNK Settings");
             MenuIni.Add("DisableSpells", new CheckBox("Disable Built-in Casting Logic", false));
@@ -141,22 +149,7 @@ namespace AutoSharp
             Thread.Sleep(30000);
             Game.QuitGame();
         }
-        public static void Main(string[] args)
-        {
-            Game.OnUpdate += AdvancedLoading;
-        }
 
-        private static void AdvancedLoading(EventArgs args)
-        {
-            if (!_loaded)
-            {
-                if (ObjectManager.Player.Gold > 0)
-                {
-                    _loaded = true;
-                    Core.DelayAction(Init, new Random().Next(3000, 25000));
-                }
-            }
-        }
         public static void AntiShrooms(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (sender != null && sender.IsMe)

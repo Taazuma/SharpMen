@@ -47,43 +47,7 @@ namespace AutoSharp.Auto.HowlingAbyss
             return true;
         }
 
-        internal static bool Farm()
-        {
-            var minion = Wizard.GetFarthestMinion();
-            var minionPos = minion != null ? minion.Position.Extend(HeadQuarters.AllyHQ.Position, 250).RandomizePosition() : Wizard.GetFarthestAllyTurret().RandomizePosition();
-            //IF THERE ARE ALLIES AROUND US STOP ORBWALKING AROUND THE TURRET LIKE A RETARD
-            if (Heroes.Player.Distance(Wizard.GetFarthestAllyTurret().Position) < 500 && Heroes.Player.Position.CountAlliesInRange(1000) != 0 && Minions.AllyMinions.Count < 3) return false;
-            //IF THERE ARE ENEMIES AROUND US OR THE MINION WE WONT FOLLOW HIM, WE WILL FIGHT!
-            if ((minionPos.CountEnemiesInRange(1000) != 0 || Heroes.Player.CountEnemiesInRange(1000) != 0) && minionPos.CountAlliesInRange(1000) != 0) return false;
-            //IF THE FARTHEST ALLY IS IN DANGER, WE SHALL FIGHT WITH HIM
-            if (Heroes.AllyHeroes.OrderByDescending(h => h.Distance(HeadQuarters.AllyHQ)).FirstOrDefault().CountEnemiesInRange(1400) != 0) return false;
-            //IF WERE FUGGD WE WILL FIGHT SKIP FARMING CUZ WE CANT FARM WHILE FUGGING XDD
-            if (Heroes.Player.CountEnemiesInRange(1000) > Heroes.Player.Position.CountAlliesInRange(1000)) return false;
-            //FOLLOW MINION
-            DecisionMaker.Goto(minionPos.RandomizePosition());
-            Orbwalker.ActiveModesFlags = Orbwalker.ActiveModes.LaneClear;
-            //IF I JUST FARM A BIT GUYS WE MIGHT WIN...
-            return true;
-        }
 
-        internal static void Fight()
-        {
-            Orbwalker.ActiveModesFlags = Heroes.Player.CountEnemiesInRange(Heroes.Player.AttackRange) == 0 ? Orbwalker.ActiveModes.LaneClear : Orbwalker.ActiveModes.Combo;
-            //DecisionMaker.Goto(Positioning.RandomlyChosenMove);
-        }
 
-        internal static bool ImSoLonely()
-        {
-            if (Heroes.AllyHeroes.All(h => h.IsDead) || Heroes.AllyHeroes.All(h=>h.InFountain()) || (Heroes.AllyHeroes.All(h => h.Distance(HeadQuarters.AllyHQ) < Heroes.Player.Distance(h))))
-            {
-                Chat.Print("im so lonely");
-                DecisionMaker.Goto(Wizard.GetFarthestAllyTurret().Position.RandomizePosition());
-                Orbwalker.ActiveModesFlags = Heroes.Player.Distance(Wizard.GetFarthestAllyTurret().Position) < 500
-                    ? Orbwalker.ActiveModes.LaneClear
-                    : Orbwalker.ActiveModes.LaneClear;
-                return true;
-            }
-            return false;
-        }
     }
 }
