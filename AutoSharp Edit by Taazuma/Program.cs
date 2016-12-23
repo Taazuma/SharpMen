@@ -14,6 +14,7 @@ using AutoSharp.MainCore;
 using AutoSharp.Spells;
 using Autosharp;
 using EloBuddy.SDK.Events;
+using AutoSharp.Auto.HowlingAbyss;
 // ReSharper disable ObjectCreationAsStatement
 
 namespace AutoSharp
@@ -44,18 +45,17 @@ namespace AutoSharp
 
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
+            Map = Game.MapId;
+            //Cache.Load();
+            Game.OnEnd += OnEnd;
+            Chat.Print("AutoSharp loaded", Color.CornflowerBlue);
             Timer = Game.Time;
             Game.OnTick += Game_OnTick;
-
+            Game.OnTick += DecisionMaker.OnTick;
         }
 
         public static void Init()
         {
-            Map = Game.MapId;
-                Cache.Load(); 
-                Autoplay.Load();
-                Game.OnEnd += OnEnd;
-            Chat.Print("AutoSharp loaded", Color.CornflowerBlue);
             MenuIni = MainMenu.AddMenu("DNK", "DNK");
             MenuIni.AddGroupLabel("DNK Settings");
             MenuIni.Add("DisableSpells", new CheckBox("Disable Built-in Casting Logic", false));
@@ -63,6 +63,8 @@ namespace AutoSharp
             MenuIni.AddLabel("More Value = more defensive playstyle");
             // Initialize Bot Functions.
             Brain.Init();
+            Auto.HowlingAbyss.ARAMShopAI.Main.Init();
+            AutoLevel.GetSequence();
             Chat.Print("Buddy Loaded !");
         }
 
